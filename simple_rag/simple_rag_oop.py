@@ -95,6 +95,8 @@ Chunk 3:
 
 The question to answer is:
 {{ user_query }}
+
+If you do not know the answer to the question, please say "I do not know"
 """
     jinja_template = Environment(loader=BaseLoader).from_string(prompt_template)
     jinja_variables = {
@@ -131,7 +133,10 @@ while True:
   query_vector = agent.generate_embedding(user_query)
   relevant_chunks = agent.get_chunks_related_to_query(query_vector=query_vector, max_chunks=3)
   prompt = agent.generate_prompt(relevant_chunks=relevant_chunks, user_query=user_query)
+  print("-------------------------------------------------")
+  print(prompt)
+  print("-------------------------------------------------")
   response = agent.prompt_llm(prompt)
   print(response)
 
- 
+
