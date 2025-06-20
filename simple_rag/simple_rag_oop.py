@@ -11,10 +11,6 @@ from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 
 
-import warnings
-warnings.filterwarnings("ignore")
-
-
 class Agent:
   
   def __init__(self):
@@ -35,7 +31,7 @@ class Agent:
     self.openai_client = OpenAI(
       api_key=self.openai_api_key,
     )
-    self.redis_client = redis.Redis(host=self.redis_api_host, port=self.redis_api_port)
+    self.redis_client = redis.Redis(host='15.4.50.102', port=6379)
 
   
   def generate_embedding(self, text):
@@ -95,8 +91,6 @@ Chunk 3:
 
 The question to answer is:
 {{ user_query }}
-
-If you do not know the answer to the question, please say "I do not know"
 """
     jinja_template = Environment(loader=BaseLoader).from_string(prompt_template)
     jinja_variables = {
@@ -124,19 +118,14 @@ If you do not know the answer to the question, please say "I do not know"
 
 agent = Agent()
 while True:
-  print("=================================================")
   print("What would you like to know about the document?")
-  print("-------------------------------------------------")
   user_query = input()
   #user_query = "What are Taylor Schneider's top 5 qualities?"
-  print("-------------------------------------------------")
+
   query_vector = agent.generate_embedding(user_query)
   relevant_chunks = agent.get_chunks_related_to_query(query_vector=query_vector, max_chunks=3)
   prompt = agent.generate_prompt(relevant_chunks=relevant_chunks, user_query=user_query)
-  print("-------------------------------------------------")
-  print(prompt)
-  print("-------------------------------------------------")
   response = agent.prompt_llm(prompt)
   print(response)
 
-
+ 

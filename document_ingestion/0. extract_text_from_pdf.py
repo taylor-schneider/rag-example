@@ -2,6 +2,7 @@ import os
 import logging
 import requests
 import json
+from dotenv import load_dotenv
 
 # Configure logging
 log_format = '%(asctime)s,%(msecs)d %(levelname)-8s [%(module)s:%(funcName)s():%(lineno)d] %(message)s'
@@ -11,22 +12,20 @@ logging.basicConfig(
     level=logging.DEBUG)
 
 # Load the environment variables
-from dotenv import load_dotenv
 load_dotenv()
 pdf_inspector_url = os.environ["PDF_INSPECTOR_URL"]
 pdf_file_name = os.environ["PDF_FILE_NAME"]
 
 # Determine the current directory and the pdf
 current_dir = os.path.abspath(os.path.dirname(__file__))
-pdf_path = os.path.join(current_dir, pdf_file_name)
+pdf_name = "Taylor Schneider - One Pager Accenture CV 2024 - External.pdf"
+pdf_path = os.path.join(current_dir, pdf_name)
 
 # Check that the pdf exists
 if not os.path.exists(pdf_path):
     raise FileNotFoundError(pdf_path)
 
 # Upload the pdf to the pdf inspector and get the text
-# The swagger documentation for this endpoint is hosted at the root url
-# eg. http://taylor-schneider.ddns.net:5555/
 files = {
     'file': open(pdf_path, 'rb'),
 }

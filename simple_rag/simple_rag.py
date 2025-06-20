@@ -2,10 +2,9 @@
 # Initialize
 # ===========================================
 import os
+import pandas
+import json
 import redis
-
-import warnings
-warnings.filterwarnings("ignore")
 
 # ===========================================
 # Initialize
@@ -47,14 +46,9 @@ while True:
     # ===========================================
 
     # Create a query and find the chunk that matches best
-    print("=================================================")
     print("What would you like to know about the document?")
-    print("-------------------------------------------------")
-
     #user_query = "What are Taylor Schneider's top 5 qualities?"
     user_query = input()
-    print("-------------------------------------------------")
-
 
     # Embed the query
     import requests
@@ -91,8 +85,10 @@ while True:
     # ===========================================
     # Generate Prompt and send to llm
     # ===========================================
+
+
     
-    # Get the chunks corresponding to the best matching embeddings
+    # Get the chunks coresponding to the best matching embeddings
     chunks = []
     for best_match_chuck_id in best_match_chuck_ids:
         chunk_id = best_match_chuck_id[0]
